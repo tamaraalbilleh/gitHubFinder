@@ -1,13 +1,15 @@
+// react imports 
 import React from 'react';
+import { Link } from "react-router-dom";
+
+// material ui imports 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import { Link } from "react-router-dom";
 
-import { connect } from 'react-redux';
-
+// use Styles from material ui 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -18,24 +20,27 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
+    AppBar: { 'background': '#dc3545', 'color': 'white' },
+    div: { 'float': 'right', 'textDecoration': 'none' },
+    Link: { 'color': 'white', 'textDecoration': 'none', margin: '10px' },
 }));
 
 
-
-const Header = function (props) {
-
+// component 
+const Header = function () {
+    // hooks
     const classes = useStyles();
 
-   
+    // render
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={{ 'background': '#dc3545', 'color': 'white' }}>
+            <AppBar position="static" className={classes.AppBar}>
                 <Toolbar>
                     <Typography variant="h5" className={classes.title}>
                         <GitHubIcon />  Github Finder
-                        <div style={{ 'float': 'right' , 'textDecoration' : 'none'}}>
-                            <Link style={{'color' : 'white' , 'textDecoration' : 'none' ,margin : '10px'}} to="/">Home</Link>
-                            <Link style={{'color' : 'white' , 'textDecoration' : 'none' ,margin : '10px'}} to="/about">About</Link>
+                        <div className={classes.div}>
+                            <Link className={classes.Link} to="/">Home</Link>
+                            <Link className={classes.Link} to="/about">About</Link>
 
                         </div>
                     </Typography>
@@ -45,10 +50,4 @@ const Header = function (props) {
     );
 }
 
-
-// const mapStateToProps = (state) => {
-//   return { cart: state.cart };
-// };
-
-// const mapDispatchToProps = {  }
 export default Header;

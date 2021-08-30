@@ -12,12 +12,15 @@ function App() {
   return (
     <React.Fragment>
       <Router>
+        
         <Header />
         <Switch>
+
           <Route exact path='/'>
             <Search />
             <Display />
           </Route>
+
           <Route exact path='/about'>
             <About />
           </Route>
