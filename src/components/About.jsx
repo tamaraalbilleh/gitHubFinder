@@ -1,21 +1,40 @@
-import React from 'react';
 
-function About(props) {
+// react imports
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    div: {
+        'padding': '39px'
+    },
+    h2: {
+        'fontSize': '40px'
+    },
+    p: {
+        'fontSize': '25px'
+    }
+}));
+
+
+// compoonent 
+function About() {
+    const classes = useStyles();
+    // render 
     return (
-        <React.Fragment>
-            <div style={{ 'padding': '39px' }}>
- 
-                <h2 style={{ 'fontSize': '40px' }}>
+        <>
+            <div className={classes.div}>
+
+                <h2 className={classes.h2}>
                     About This App
                 </h2>
-                <p style={{ 'fontSize': '25px' }}>
+                <p className={classes.p}>
                     App to search Github users
                 </p>
-                <p style={{ 'fontSize': '25px' }}>
+                <p className={classes.p}>
                     Version: 1.0.0
                 </p>
             </div>
-        </React.Fragment>
+        </>
     )
 }
 

@@ -1,19 +1,24 @@
+import actions from './actionTypes'
+import {ActionObjects } from './actionTypes'
+
 let initialState = {
     repos: [],
 }
 
-const repoReducer = (state = initialState, action) => {
+const repoReducer = (state = initialState, action : ActionObjects) => {
+    
     let { type, payload } = action;
 
     switch (type) {
-        case 'REPOS':
+        case actions.REPOS:
             return { repos: payload };
-        case 'RESET':
+        case actions.REPOS:
             let newState = {}
             return { repos: newState };
         default:
             return state
     }
+
 }
 
 

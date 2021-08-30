@@ -1,9 +1,9 @@
 // imports 
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector ,connect} from 'react-redux';
 import { resetUsers } from '../store/actions'
 import { Link } from "react-router-dom";
-
+import {returnState } from '../store/useSelector'
 // material ui imports 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -27,6 +27,13 @@ const useStyles = makeStyles({
         borderRadius: '50%',
         margin: 'auto'
     },
+    first: { width: '100%', textAlign: 'center' },
+    second: { padding: '15px', width: 'calc(100% - 100px)', color: 'white', backgroundColor: '#f4f4f4', margin: 'auto', textAlign: 'center', marginLeft: '-12px' },
+    third: { 'display': 'grid', gridTemplateColumns: '1fr 1fr 1fr', 'gap': '30px', padding: '40px', 'textAlign': 'center', margin: 'auto' },
+    fourth: { textAlign: 'center' },
+    fifth: { width: '100%', display: 'flex', justifyContent: 'center' },
+    sixth: { 'textDecoration': 'none', 'width': '35%' },
+    seventh: { padding: '15px', width: '100%', color: 'white', 'backgroundColor': '#333' },
 });
 
 
@@ -34,47 +41,41 @@ const useStyles = makeStyles({
 const Display = (props) => {
     // variables 
     const classes = useStyles();
-    const dispach = useDispatch();
-    const state = useSelector((state) => {
-        return state.users
-
-    })
+    const state = useSelector(()=> returnState (props))
 
     // handles 
     const handleClick = () => {
-        console.log('before users')
-        dispach(resetUsers())
+        props.resetUsers()
     }
 
     // returns
-    console.log('this is the state', state)
     return (
-        <React.Fragment>
-            <div style={{ width: '100%', textAlign: 'center' }}>
+        <>
+            <div className={classes.first}>
 
-                {(state.users.length !== 0) && <Button onClick={handleClick} size="small" color="white" style={{ padding: '15px', width: 'calc(100% - 100px)', color: 'white', backgroundColor: '#f4f4f4', color: 'black', margin: 'auto', textAlign: 'center', marginLeft: '-12px' }}>
+                {(state.users.users.length !== 0) && <Button onClick={handleClick} size="small" color="white" className={classes.second}>
                     Clear
                 </Button>
                 }
-                {state.users &&
-                    <div style={{ 'display': 'grid', gridTemplateColumns: '1fr 1fr 1fr', 'gap': '30px', padding: '40px', 'textAlign': 'center', margin: 'auto' }}>
+                {state.users.users &&
+                    <div className={classes.third}>
 
 
 
 
                         {
-                            state.users.map((item) => {
+                            state.users.users.map((item) => {
                                 return (
                                     <Card className={classes.root} key={item.id}>
                                         <CardActionArea>
 
                                             <CardMedia
-                                                // style={{'bord'}}
+
                                                 className={classes.media}
                                                 image={item.avatar_url}
                                             />
                                             <CardContent>
-                                                <div style={{ textAlign: 'center' }}>
+                                                <div className={classes.fourth}>
 
                                                     <Typography gutterBottom variant="h5" component="h2">
                                                         {item.login}
@@ -84,10 +85,10 @@ const Display = (props) => {
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions >
-                                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }} >
+                                            <div className={classes.fifth} >
 
-                                                <Link to={`/user/${item.login}`} style={{ 'textDecoration': 'none', 'width': '35%' }}>
-                                                    <Button size="small" color="white" style={{ padding: '15px', width: '100%', color: 'white', 'backgroundColor': '#333' }}>
+                                                <Link to={`/user/${item.login}`} className={classes.sixth}>
+                                                    <Button size="small" color="white" className={classes.seventh}>
                                                         More
 
                                                     </Button>
@@ -103,8 +104,10 @@ const Display = (props) => {
                     </div>
                 }
             </div>
-        </React.Fragment>
+        </>
     );
 }
 
-export default Display;
+const mapDispatchToProps = { resetUsers };
+const mapStateToProps = state => state;
+export default connect(mapStateToProps, mapDispatchToProps)(Display);

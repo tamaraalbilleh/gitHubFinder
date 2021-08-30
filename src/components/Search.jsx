@@ -1,21 +1,19 @@
+// react imports 
 import React, { useState } from 'react'
+import { connect } from 'react-redux';
+import { getSearchUsers } from '../store/actions'
+
+// material ui imports
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { getSearchUsers } from '../store/actions'
-
-
-
-
-
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import InfoIcon from '@material-ui/icons/Info';
-import Divider from '@material-ui/core/Divider';
 
+// useStyles from material ui 
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -24,32 +22,47 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     list: {
-        width: '100%',
+
+    },
+    form: {
+        'margin': '40px', width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
+    text: { width: 'calc(100% - 90px)', marginBottom: '30px' },
+    flag: { width: '100%', backgroundColor: '#f4f4f4', },
+    search: { width: 'calc(100% - 90px)', padding: '10px', color: 'white', backgroundColor: '#333' }
 }));
 
+// the component 
 const Search = (props) => {
-    const [flag, setFlag] = useState(false)
-    const dispach = useDispatch();
 
+    // hooks
+    const [flag, setFlag] = useState(false);
+    const [query, setQuery] = useState('')
+
+    const classes = useStyles();
+
+    // handlers
     const handleSubmit = (e) => {
         e.preventDefault()
-        // console.log ('submitted ' , e.target.query.value)
         if (e.target.query.value === '') {
             setFlag(true)
         } else {
-            dispach(getSearchUsers(e.target.query.value))
+            props.getSearchUsers(query)
             setFlag(false)
-            e.target.query.value = ''
+            setQuery('')
         }
     }
 
-    const classes = useStyles();
+    const handleChange = e => {
+        setQuery(e.target.value)
+    }
+
+    // render
     return (
-        <React.Fragment>
-            <form onSubmit={handleSubmit} style={{ 'margin': '40px', width: '100%' }} className={classes.list} noValidate autoComplete="off">
-                {flag && <div style={{ width: '100%', backgroundColor: '#f4f4f4', }}>
+        <>
+            <form onSubmit={handleSubmit} className={classes.form} noValidate autoComplete="off">
+                {flag && <div className={classes.flag}>
 
                     <ListItem>
                         <ListItemAvatar>
@@ -62,12 +75,15 @@ const Search = (props) => {
                 </div>
                 }
                 <br />
-                <TextField name='query' style={{ width: 'calc(100% - 90px)', marginBottom: '30px' }} id="outlined-basic" label="Search Users ..." variant="outlined" />
-                <Button type='submit' variant="contained" style={{ width: 'calc(100% - 90px)', padding: '10px', color: 'white', backgroundColor: '#333' }}>Search</Button>
+                <TextField value={query} onChange={handleChange} name='query' className={classes.text} id="outlined-basic" label="Search Users ..." variant="outlined" />
+                <Button type='submit' variant="contained" className={classes.search}>Search</Button>
             </form>
 
-        </React.Fragment>
+        </>
     );
 }
 
-export default Search;
+
+const mapDispatchToProps = { getSearchUsers };
+const mapStateToProps = state => state;
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

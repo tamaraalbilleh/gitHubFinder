@@ -1,19 +1,24 @@
+import {ActionObjects } from './actionTypes'
+import actions from './actionTypes'
+
 let initialState = {
     user: {},
 }
 
-const useReducer = (state = initialState, action) => {
+const useReducer = (state = initialState, action :ActionObjects ) => {
+
     let { type, payload } = action;
 
     switch (type) {
-        case 'GET_USER':
+        case actions.GET_USER:
             return { user: payload };
-        case 'RESET':
+        case actions.RESET:
             let newState = {}
             return { user: newState };
         default:
             return state
     }
+    
 }
 
 
